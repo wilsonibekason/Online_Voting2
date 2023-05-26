@@ -62,6 +62,7 @@ router.post("/signup", (req, res) => {
               to: user.email, // list of receivers
               subject: "E-voting Registration", // Subject line
               html: " You sucessfully complete Your  registration for E-voting.", // html body
+              
             });
             res.json({ message: "saved successfully" });
           })

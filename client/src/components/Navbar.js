@@ -33,7 +33,7 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-dark bg-success">
       <div
-        className="nav-wrapper blue"
+        className="nav-wrapper blue px-5"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -52,7 +52,7 @@ const NavBar = () => {
               fontFamily: "Acme",
             }}
           >
-            Online Voting System Demonstratration
+            Online Voting System
           </Link>
         </div>
         <div style={{ marginLeft: "60px" }}>

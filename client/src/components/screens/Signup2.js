@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { sName, bName } from "../utils";
+import { toast } from "react-hot-toast";
 import M from "materialize-css";
 const SignUp = () => {
   const history = useHistory();
@@ -21,6 +22,7 @@ const SignUp = () => {
   }, [url]);
   const uploadPic = () => {
     const data = new FormData();
+    console.data("DatData Response", data);
     data.append("file", image);
     data.append("upload_preset", "voting");
     data.append("cloud_name", "dvfpkko1z");
@@ -66,6 +68,7 @@ const SignUp = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log("User Response Data", data);
         if (data.error) {
           M.toast({ html: data.error, classes: "#c62828 red darken-3 " });
         } else {
@@ -196,7 +199,8 @@ const SignUp = () => {
         </div>
         <button
           className="btn btn-success mb-4 mt-2"
-          onClick={() => PostData()}
+          //   onClick={() => PostData()}
+          onClick={() => alert("The Registration Button Has Been Triggered")}
         >
           Register
         </button>

@@ -1,7 +1,7 @@
 {
-  "name": "MERN-STACK",
+  "name": "mern-stack",
   "version": "1.0.0",
-  "description": "",
+  "description": "How to run this project \r 1.At first Download this project or  use git clone https://github.com/kumohen/Online_Voting2.git \r 2.the use npm start command from your terminal\r 3.go to client directory and used npm start command",
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js"
@@ -10,8 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.10.1",
+    "@types/nodemailer-sendgrid": "^1.0.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.3",
+    "cloudinary": "^1.37.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
@@ -22,8 +26,18 @@
     "react-hot-toast": "^2.4.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/nodemailer": "^6.4.8",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wilsonibekason/Online_Voting2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wilsonibekason/Online_Voting2/issues"
+  },
+  "homepage": "https://github.com/wilsonibekason/Online_Voting2#readme"
 }

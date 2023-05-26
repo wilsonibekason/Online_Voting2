@@ -5,12 +5,6 @@ import { UserContext } from "../../App";
 import Posts from "./Posts";
 import M from "materialize-css";
 import Image from "../../Image/Capture.JPG";
-import {
-  Alert,
-  Accordion,
-  FormText,
-  Button as BootstrapButton,
-} from "react-bootstrap";
 
 const SignIn = () => {
   const { state, dispatch } = useContext(UserContext);
@@ -54,27 +48,6 @@ const SignIn = () => {
       });
   };
 
-  const BasicExample = () => {
-    return (
-      <>
-        {" "}
-        {[
-          "primary",
-          "secondary",
-          "info",
-          "warning",
-          "light",
-          "danger    ",
-          "success",
-          "error",
-        ].map((variant) => {
-          <Alert variant={variant} key={variant}>
-            This is an example of {variant}{" "}
-          </Alert>;
-        })}
-      </>
-    );
-  };
   return (
     <div
       className="mycard"
@@ -111,8 +84,7 @@ const SignIn = () => {
                   marginBottom: "15px",
                 }}
               />
-              <p>Example</p>
-              {/* <BootstrapButton variant="info">Hello Click m </BootstrapButton> */}
+
               <div>
                 <div className="col">
                   <input

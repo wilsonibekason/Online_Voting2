@@ -11,6 +11,7 @@ import Profile from "./components/screens/Profile";
 import Signup from "./components/screens/Signup2";
 //import SignUp from './Attendance/screens/Signup';
 import CreatePost from "./components/screens/CreatePost";
+import { ScreenWrapper } from "./components";
 //import AttenHome from "./Attendance/Home"
 import { reducer, initialState } from "./reducers/userReducer";
 import { CheckmarkIcon, Toast, Toaster } from "react-hot-toast";
@@ -57,9 +58,11 @@ function App() {
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       <BrowserRouter>
-        <Toaster />
-        <NavBar />
-        <Routing />
+        {/* <Toaster /> */}
+        <ScreenWrapper>
+          <NavBar />
+          <Routing />
+        </ScreenWrapper>
       </BrowserRouter>
     </UserContext.Provider>
   );
