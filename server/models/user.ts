@@ -32,4 +32,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  stateName: {
+    type: String,
+    required: true,
+  },
+  pic: {
+    type: String,
+    default:
+      "https://wallpapers.com/images/hd/cool-profile-picture-kpwjvjw5434qfzo3.jpg",
+  },
 });
+
+mongoose.model("User", userSchema);
