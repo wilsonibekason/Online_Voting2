@@ -31,7 +31,7 @@ const NavBar = () => {
   //    }
   //  }
   return (
-    <nav className="navbar navbar-dark bg-success">
+    <nav className="navbar navbar-dark bg-success ">
       <div
         className="nav-wrapper blue px-5"
         style={{
@@ -54,6 +54,7 @@ const NavBar = () => {
           >
             Online Voting System
           </Link>
+          <p>Hello Component, I am wilson Ibekason, a full stack developer </p>
         </div>
         <div style={{ marginLeft: "60px" }}>
           {state && state.isAdmin && (

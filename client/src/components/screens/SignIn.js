@@ -5,6 +5,8 @@ import { UserContext } from "../../App";
 import Posts from "./Posts";
 import M from "materialize-css";
 import Image from "../../Image/Capture.JPG";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 const SignIn = () => {
   const { state, dispatch } = useContext(UserContext);
@@ -18,28 +20,27 @@ const SignIn = () => {
         email
       )
     ) {
-      M.toast({ html: "invalid email", classes: "#c62828 red darken-3" });
+      toast.error("Invalid Email Address");
+      return;
+    } else if (!password || !email) {
+      toast.error("Fields are required");
       return;
     }
-    fetch("http://localhost:5000/signin", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+
+    axios
+      .post("http://localhost:5000/signin", {
         password,
         email,
-      }),
-    })
-      .then((res) => res.json())
+      })
+      .then((res) => res.data)
       .then((data) => {
         if (data.error) {
-          M.toast({ html: data.error, classes: "#c62828 red darken-3" });
+          toast.error(data.error, { duration: 3000 });
         } else {
           localStorage.setItem("jwt", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
+          toast.success("YOU HAVE SUCCESSFULLY LOGGED IN");
           dispatch({ type: "USER", payload: data.user });
-
           history.push("/");
         }
       })
@@ -125,11 +126,11 @@ const SignIn = () => {
                   </select>
                 </div>
               </div>
-
               <button
                 className="btn btn-success mt-4 "
                 style={{ height: "50px", width: "80%", marginLeft: "10%" }}
                 onClick={() => PostData()}
+                // onClick={() => toast.success("Help Me money")}
               >
                 Login
               </button>

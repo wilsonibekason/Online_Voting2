@@ -7,10 +7,13 @@ import fs from "fs";
 import jwt from "jsonwebtoken";
 import nodemailer, { createTransport } from "nodemailer";
 import mongoose from "mongoose";
-import { ISavedUser, TUser } from "../types/types";
+import { ISavedUser, TUser, UUser } from "../types/types";
+import User from "../models/user";
+import type { Document } from "mongoose";
 
 const router = express.Router();
-const User = mongoose.model("User");
+
+// const User = mongoose.model("User");
 
 console.log(nodemailer);
 
@@ -51,11 +54,12 @@ router.post("/signup", (req: Request, res: Response) => {
     return res
       .status(422)
       .json({ error: "Please fill in all fields, they are required" });
+  // @ts-ignore
   User.findOne({ email: email }).then((savedUser: ISavedUser) => {
     if (savedUser) {
-      return res
-        .status(422)
-        .json({ error: "User already exists with that email" });
+      return res.status(422).json({
+        error: `User already exists with that email ${savedUser.email}`,
+      });
     }
     bcrypt.hash(password, 12).then((hashedpassword) => {
       // create new user with updated hashed Password
@@ -73,9 +77,15 @@ router.post("/signup", (req: Request, res: Response) => {
       // save the updated user to database
       user
         .save()
+        // @ts-ignore
         .then((user: ISavedUser) => {
           // READ THE HTML TEMPLATE
-          const templatePath = path.join(__dirname, "public", "email.html");
+          const templatePath = path.join(
+            __dirname,
+            "../",
+            "public",
+            "email.html"
+          );
           fs.readFile(templatePath, "utf8", (err: any, data: string) => {
             if (err) throw err;
             /// Replace place holder with actual data
@@ -84,15 +94,17 @@ router.post("/signup", (req: Request, res: Response) => {
               .replace(` ${lastname} `, user.lastname);
             ///  send email with updated HTML content
             transporter.sendMail({
-              from: "wilsonibekason@gmail.com",
+              from: "mahenmonhdal111@gmail.com",
               to: user.email,
               subject: "E-Voting Registration",
               html: htmlTemplate,
+              // html: "you have been registered",
             });
             res.json({
               message:
                 "Success!!!!, message has been sent to " +
                 user.email +
+                " " +
                 "successfully",
             });
           });
@@ -108,6 +120,7 @@ router.post("/signin", (req: express.Request, res: express.Response) => {
     return res
       .status(400)
       .json({ error: `please add email and password, the are required` });
+  // @ts-ignore
   User.findOne({ email: email }).then((savedUser: ISavedUser) => {
     if (!savedUser) {
       {

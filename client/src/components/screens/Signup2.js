@@ -199,8 +199,8 @@ const SignUp = () => {
         </div>
         <button
           className="btn btn-success mb-4 mt-2"
-          //   onClick={() => PostData()}
-          onClick={() => alert("The Registration Button Has Been Triggered")}
+          onClick={() => PostData()}
+          // onClick={() => alert("The Registration Button Has Been Triggered")}
         >
           Register
         </button>
