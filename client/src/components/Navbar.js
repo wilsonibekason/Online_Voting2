@@ -54,7 +54,6 @@ const NavBar = () => {
           >
             Online Voting System
           </Link>
-          <p>Hello Component, I am wilson Ibekason, a full stack developer </p>
         </div>
         <div style={{ marginLeft: "60px" }}>
           {state && state.isAdmin && (
@@ -90,6 +89,7 @@ const NavBar = () => {
                 color: "white",
                 float: "right",
                 listStyleType: "none",
+                cursor: "pointer"
               }}
               onClick={() => {
                 localStorage.clear();

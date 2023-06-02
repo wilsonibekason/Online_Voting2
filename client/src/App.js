@@ -15,6 +15,7 @@ import { ScreenWrapper } from "./components";
 //import AttenHome from "./Attendance/Home"
 import { reducer, initialState } from "./reducers/userReducer";
 import { CheckmarkIcon, Toast, Toaster } from "react-hot-toast";
+import EmailVerification from "./components/screens/EmailVerification";
 
 export const UserContext = createContext();
 
@@ -48,6 +49,12 @@ const Routing = () => {
       </Route> */}
       <Route path="/result">
         <CreatePost />
+      </Route>
+      <Route path="/verify/:token">
+        <EmailVerification />
+      </Route>
+      <Route path="/landing">
+        <h1>Hello World Welcome to our voting system</h1>
       </Route>
     </Switch>
   );

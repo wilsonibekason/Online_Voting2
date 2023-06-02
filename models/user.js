@@ -42,6 +42,18 @@ const userSchema = new mongoose.Schema({
     default:
       "https://res.cloudinary.com/cnq/image/upload/v1586197723/noimage_d4ipmd.png",
   },
+  verificationToken: {
+    type: String,
+    default: null,
+  },
+  verificationTokenExpiry: {
+    type: Date,
+    default: null,
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 mongoose.model("User", userSchema);

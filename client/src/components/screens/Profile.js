@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { man } from "../../assets";
 const Profile = () => {
   const history = useHistory();
 
@@ -14,13 +15,14 @@ const Profile = () => {
           </p>
 
           <img
-            src={userInfor.pic}
+            src={userInfor.pic ? userInfor.pic : man}
             style={{
               height: "140px",
               width: "140px",
               borderRadius: "50%",
               marginLeft: "27%",
               marginBottom: "10px",
+              objectFit: "cover",
             }}
           />
           <p>

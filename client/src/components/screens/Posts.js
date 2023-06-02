@@ -11,7 +11,7 @@ const Posts = () => {
       });
   }, []);
 
-  const renderData = data.map((item) => (
+  const renderData = data.map((item, index) => (
     <div
       style={{
         width: "207px",
@@ -23,7 +23,7 @@ const Posts = () => {
         background: "white",
         borderRadius: "15px",
       }}
-      key={item.title}
+      key={index + 1}
     >
       <p style={{ textAlign: "center" }}>
         <b>{item.title.split(" ")[0]}</b>

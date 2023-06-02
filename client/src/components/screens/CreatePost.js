@@ -1,47 +1,79 @@
 import React, { useState, useEffect } from "react";
 import M from "materialize-css";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 const CretePost = () => {
   const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/posts", {})
+  /***
+ *    fetch("http://localhost:5000/posts", {})
       .then((res) => res.json())
       .then((result) => {
         setData(result.posts);
       });
+ */
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/posts")
+      .then((res) => res.data)
+      .then((data) => {
+        setData(data && data.posts);
+      })
+      .catch((err) => console.error(err));
+    // setData(result.posts);
   }, []);
   let total = 0;
 
   data.map((item) => {
     total += item.votes.length;
   });
+  console.table(data);
 
   return (
-    <div>
+    <div
+      style={{
+        fontFamily: "Radja",
+      }}
+    >
       <table style={{ width: "80%", marginTop: "50px", marginLeft: "10%" }}>
         <thead style={{ fontSize: "22px" }}>
           <tr>
             <th>Option</th>
             <th>Symbol</th>
             <th>Vote</th>
-            <th>Persentage Vote</th>
+            <th className="text-2xl font-extrabold text-red-900">
+              Persentage Vote
+            </th>
           </tr>
         </thead>
 
         {data.map((item) => (
-          <tbody key={item.title} style={{ padding: "5px" }}>
+          <tbody
+            key={item.title}
+            style={{
+              maxHeight: "400px",
+              backgroundColor: "whitesmoke",
+            }}
+          >
             <tr>
-              <td>{item.title}</td>
+              <td
+                style={{
+                  textTransform: "capitalize",
+                }}
+              >
+                {item.title}
+              </td>
 
               <td>
                 <img
                   src={item.photo}
                   style={{
-                    width: "150px",
-                    height: "150px",
+                    width: "80px",
+                    height: "80px",
                     paddingTop: "10px",
                     paddingBottom: "10px",
+                    objectFit: "cover",
+                    borderRadius: "50%",
                   }}
                 />
               </td>
@@ -53,12 +85,20 @@ const CretePost = () => {
           </tbody>
         ))}
       </table>
-      <p style={{ fontSize: "30px" }}>
+      <p
+        style={{
+          fontSize: "30px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <b
           style={{
-            marginLeft: "39%",
             backgroundColor: "white",
-            marginTop: "150px",
+            marginTop: "5rem",
+            whiteSpace: "nowrap",
+            fontWeight: "bolder",
           }}
         >
           Total counting Vote : {total}

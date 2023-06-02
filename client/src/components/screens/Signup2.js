@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { sName, bName } from "../utils";
-import { toast } from "react-hot-toast";
+import { sName, bName, stateNames, specificationData } from "../utils";
 import M from "materialize-css";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import validator from "validator";
 const SignUp = () => {
   const history = useHistory();
   const [firstname, setFirstName] = useState("");
@@ -20,41 +22,32 @@ const SignUp = () => {
       uploadFields();
     }
   }, [url]);
-  const uploadPic = () => {
+  const uploadPic = async () => {
     const data = new FormData();
-    console.data("DatData Response", data);
+    console.log("Data Response", data);
     data.append("file", image);
     data.append("upload_preset", "voting");
     data.append("cloud_name", "dvfpkko1z");
-    fetch("https://api.cloudinary.com/v1_1/dvfpkko1z/image/upload", {
-      method: "post",
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUrl(data.url);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const data_1 = await axios.post(
+        "https://api.cloudinary.com/v1_1/dvfpkko1z/image/upload",
+        data
+      );
+      setUrl(data_1.url);
+      toast.success("Image has been uploaded successfully");
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   const uploadFields = () => {
-    if (
-      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        email
-      )
-    ) {
-      M.toast({ html: "invalid email", classes: "#c62828 red darken-3" });
+    if (!validator.isEmail(email)) {
+      toast.error("Invalid Email Address");
       return;
     }
-    // const obj = {firstname,lastname,password,email,city,stateName,mobile,branch,pic:url}
-    // console.log(obj)
-    fetch("http://localhost:5000/signup", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+
+    axios
+      .post("http://localhost:5000/signup", {
         firstname,
         lastname,
         password,
@@ -64,22 +57,25 @@ const SignUp = () => {
         mobile,
         branch,
         pic: url,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("User Response Data", data);
+      })
+      .then((res) => {
+        const data = res.data;
         if (data.error) {
-          M.toast({ html: data.error, classes: "#c62828 red darken-3 " });
+          toast.error(data.error);
         } else {
-          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+          toast.success(data.message);
           history.push("/signin");
         }
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.data && err.response.data.error) {
+          toast.error(err.response.data.error);
+        } else {
+          toast.error("An error occurred during signup. Please try again.");
+        }
       });
   };
+
   const PostData = () => {
     if (image) {
       uploadPic();
@@ -91,12 +87,15 @@ const SignUp = () => {
   return (
     <div className="col-5" style={{ margin: "auto" }}>
       <div className="card px-5 py-2" style={{ margin: "5%" }}>
-        <h4 style={{ margin: "auto", marginBottom: "20px" }}>Registration</h4>
+        <h1 style={{ margin: "auto", marginBottom: "20px" }}>
+          Registration Form{" "}
+        </h1>
         <div className="row ">
           <div className="col">
             <input
+              required={true}
               type="text"
-              class="form-control"
+              className="form-control"
               value={firstname}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="First Name"
@@ -104,8 +103,9 @@ const SignUp = () => {
           </div>
           <div className="col">
             <input
+              required={true}
               type="text"
-              class="form-control"
+              className="form-control"
               value={lastname}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Last Name"
@@ -116,6 +116,7 @@ const SignUp = () => {
         <div className="row">
           <div className="col">
             <input
+              required={true}
               type="text"
               placeholder="email"
               value={email}
@@ -125,6 +126,7 @@ const SignUp = () => {
           </div>
           <div className="col">
             <input
+              required={true}
               type="password"
               placeholder="password"
               value={password}
@@ -137,6 +139,7 @@ const SignUp = () => {
         <div className="row">
           <div className="col-md-6">
             <input
+              required={true}
               className="form-control"
               type="text"
               placeholder="city"
@@ -150,7 +153,7 @@ const SignUp = () => {
               value={stateName}
               onChange={(e) => setStateName(e.target.value)}
             >
-              {sName.map((item) => (
+              {stateNames.map((item) => (
                 <option value={item} key={item}>
                   {" "}
                   {item}{" "}
@@ -163,6 +166,7 @@ const SignUp = () => {
         <div className="row">
           <div className="col-md-6">
             <input
+              required={true}
               type="number"
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
@@ -177,7 +181,7 @@ const SignUp = () => {
               value={branch}
               onChange={(e) => setBranch(e.target.value)}
             >
-              {bName.map((item) => (
+              {specificationData.map((item) => (
                 <option value={item} key={item}>
                   {" "}
                   {item}{" "}
@@ -189,18 +193,21 @@ const SignUp = () => {
         <br />
         <div className="input-group mb-3">
           <input
+            required={true}
             type="file"
             className="form-control"
             onChange={(e) => setImage(e.target.files[0])}
           />
-          <label className="input-group-text" for="inputGroupFile02">
+          {/* <label className="input-group-text" for="inputGroupFile02">
             Upload
-          </label>
+          </label> */}
+          <button onClick={uploadPic}>Upload Image</button>
         </div>
+
         <button
           className="btn btn-success mb-4 mt-2"
-          onClick={() => PostData()}
-          // onClick={() => alert("The Registration Button Has Been Triggered")}
+          // onClick={() => PostData()}
+          onClickCapture={() => uploadFields()}
         >
           Register
         </button>

@@ -21,11 +21,12 @@ require("./models/students");
 
 app.use(express.json());
 app.use(cors());
+app.get("/", (req, res, next) => console.log("HELLO WROLD"));
 // app.use(require('./routes/auth'))
 app.use(require("./routes/post"));
 app.use(require("./routes/user"));
 app.use(require("./routes/student"));
-//mongodb+srv://wilsonibekason:nodecomplete@cluster0.cjjeqbq.mongodb.net/
+//   mongodb+srv://wilsonibekason:nodecomplete@cluster0.cjjeqbq.mongodb.net/
 app.listen(PORT, () => {
   mongoose
     .connect(
@@ -38,7 +39,7 @@ app.listen(PORT, () => {
       }
     )
     .then((res) => {
-      console.log("MongoDB is connected", res);
+      console.log("MongoDB is connected");
       console.log(`App listening on port ${PORT}`);
     })
     .catch((error) => {

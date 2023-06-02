@@ -45,7 +45,11 @@ const SignIn = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.data && err.response.data.error) {
+          toast.error(err.response.data.error);
+        } else {
+          toast.error("An error occurred during signup. Please try again.");
+        }
       });
   };
 

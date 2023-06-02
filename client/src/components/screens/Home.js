@@ -117,21 +117,35 @@ const Home = () => {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
                   <h6>
                     <b style={{}}>{index + 1}</b>
                   </h6>
-                  <h6>
-                    <b style={{}}>{item.title.split(" ")[0]}</b>
-                  </h6>
-
-                  <img
-                    src={item.photo}
-                    style={{ height: "200px", width: "200px" }}
-                    // style={{ width: "60px", height: "60px" }}
-                  />
-
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyItems: "center",
+                    }}
+                  >
+                    <h6>
+                      <b style={{ paddingRight: "5px" }}>
+                        {item.title.split(" ")[0]}
+                      </b>
+                    </h6>
+                    <div style={{ maxHeight: "50px", maxWidth: "50px" }}>
+                      <img
+                        src={item.photo}
+                        style={{
+                          height: "100%",
+                          width: "100%",
+                          borderRadius: "20px",
+                        }}
+                      />
+                    </div>
+                  </div>
                   <div className="card-content">
                     {!item.votes.includes(state._id) && newVlaue == false ? (
                       <button
@@ -149,7 +163,11 @@ const Home = () => {
                     {newVlaue ? (
                       <button
                         className="btn disabled"
-                        style={{ marginLeft: "47px", background: "red" }}
+                        style={{
+                          marginLeft: "47px",
+                          background: "red",
+                          cursor: "pointer",
+                        }}
                       >
                         Already Voted
                       </button>
