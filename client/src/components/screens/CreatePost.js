@@ -3,6 +3,8 @@ import M from "materialize-css";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import SheetJSReactAoO from "./SheetjsReactAoO";
+import { read, utils, writeFileXLSX } from "xlsx";
 const CretePost = () => {
   const [data, setData] = useState([]);
   /***
@@ -29,82 +31,100 @@ const CretePost = () => {
   });
   console.table(data);
 
+  const mainData = data.map((item, index) => ({
+    Option: item.title,
+    Symbol: item.photo,
+    Vote: item.votes.length,
+    Percentage_Vote: `${((item.votes.length / total) * 100).toFixed(2)}%`,
+  }));
+
+  const exportVotes = React.useCallback(() => {
+    const ws = utils.json_to_sheet(mainData);
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, ws, "DataTable");
+    writeFileXLSX(wb, "NigerianGeniusVotesOverview.xlsx");
+  }, [mainData]);
+
   return (
-    <div
-      style={{
-        fontFamily: "Radja",
-      }}
-    >
-      <table style={{ width: "80%", marginTop: "50px", marginLeft: "10%" }}>
-        <thead style={{ fontSize: "22px" }}>
-          <tr>
-            <th>Option</th>
-            <th>Symbol</th>
-            <th>Vote</th>
-            <th className="text-2xl font-extrabold text-red-900">
-              Persentage Vote
-            </th>
-          </tr>
-        </thead>
-
-        {data.map((item) => (
-          <tbody
-            key={item.title}
-            style={{
-              maxHeight: "400px",
-              backgroundColor: "whitesmoke",
-            }}
-          >
-            <tr>
-              <td
-                style={{
-                  textTransform: "capitalize",
-                }}
-              >
-                {item.title}
-              </td>
-
-              <td>
-                <img
-                  src={item.photo}
-                  style={{
-                    width: "80px",
-                    height: "80px",
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                    objectFit: "cover",
-                    borderRadius: "50%",
-                  }}
-                />
-              </td>
-              <td style={{ fontSize: "19px", fontWeight: "700" }}>
-                {item.votes.length}
-              </td>
-              <td>{((item.votes.length / total) * 100).toFixed(2)}%</td>
-            </tr>
-          </tbody>
-        ))}
-      </table>
-      <p
+    <>
+      {/* <SheetJSReactAoO /> */}
+      <div
         style={{
-          fontSize: "30px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          fontFamily: "Radja",
         }}
       >
-        <b
+        <table style={{ width: "80%", marginTop: "50px", marginLeft: "10%" }}>
+          <thead style={{ fontSize: "22px" }}>
+            <tr>
+              <th>Option</th>
+              <th>Symbol</th>
+              <th>Vote</th>
+              <th className="text-2xl font-extrabold text-red-900">
+                Persentage Vote
+              </th>
+            </tr>
+          </thead>
+
+          {data.map((item) => (
+            <tbody
+              key={item.title}
+              style={{
+                maxHeight: "400px",
+                backgroundColor: "whitesmoke",
+              }}
+            >
+              <tr>
+                <td
+                  style={{
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {item.title}
+                </td>
+
+                <td>
+                  <img
+                    src={item.photo}
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </td>
+                <td style={{ fontSize: "19px", fontWeight: "700" }}>
+                  {item.votes.length}
+                </td>
+                <td>{((item.votes.length / total) * 100).toFixed(2)}%</td>
+              </tr>
+            </tbody>
+          ))}
+        </table>
+        <p
           style={{
-            backgroundColor: "white",
-            marginTop: "5rem",
-            whiteSpace: "nowrap",
-            fontWeight: "bolder",
+            fontSize: "30px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          Total counting Vote : {total}
-        </b>
-      </p>
-    </div>
+          <b
+            style={{
+              backgroundColor: "white",
+              marginTop: "5rem",
+              whiteSpace: "nowrap",
+              fontWeight: "bolder",
+            }}
+          >
+            Total counting Vote : {total}
+          </b>
+        </p>
+        <button onClick={exportVotes}>Export to Excel Format</button>
+      </div>
+    </>
   );
 };
 
