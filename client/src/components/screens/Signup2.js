@@ -64,7 +64,7 @@ const SignUp = () => {
           toast.error(data.error);
         } else {
           toast.success(data.message);
-          history.push("/signin");
+          history.push("/verifyemail");
         }
       })
       .catch((err) => {

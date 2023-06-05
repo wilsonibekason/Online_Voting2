@@ -16,6 +16,9 @@ import { ScreenWrapper } from "./components";
 import { reducer, initialState } from "./reducers/userReducer";
 import { CheckmarkIcon, Toast, Toaster } from "react-hot-toast";
 import EmailVerification from "./components/screens/EmailVerification";
+import SendMail from "./components/screens/auth/SendMail";
+import VerifyEmail from "./components/screens/auth/VerifyEmail";
+import ResetPassword from "./components/screens/auth/ResetPassword";
 
 export const UserContext = createContext();
 
@@ -55,6 +58,15 @@ const Routing = () => {
       </Route>
       <Route path="/landing">
         <h1>Hello World Welcome to our voting system</h1>
+      </Route>
+      <Route path="/reset-password-verify/:token">
+        <ResetPassword />
+      </Route>
+      <Route path="/sendmail">
+        <SendMail />
+      </Route>
+      <Route path="/verifyemail">
+        <VerifyEmail />
       </Route>
     </Switch>
   );

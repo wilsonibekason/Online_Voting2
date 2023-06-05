@@ -7,6 +7,8 @@ import M from "materialize-css";
 import Image from "../../Image/Capture.JPG";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+// import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
 
 const SignIn = () => {
   const { state, dispatch } = useContext(UserContext);
@@ -52,6 +54,17 @@ const SignIn = () => {
         }
       });
   };
+  // const MySwal = withReactContent(Swal);
+  // const trigerSweetAlert = () => {
+  //   MySwal.fire({
+  //     title: <p>Hello World</p>,
+  //     didOpen: () => {
+  //       MySwal.showLoading();
+  //     },
+  //   }).then(() => {
+  //     return MySwal.fire(<p>Shorthand works too</p>);
+  //   });
+  // };
 
   return (
     <div
@@ -63,7 +76,7 @@ const SignIn = () => {
       </p>
       <div className="row">
         <div className="col-12">
-          <div className="clo-6" style={{ float: "left" }}>
+          <div className="col-6" style={{ float: "left" }}>
             <Posts />
           </div>
           <div className="col-6" style={{ float: "right", width: "42%" }}>
@@ -146,7 +159,22 @@ const SignIn = () => {
                   marginTop: "20px",
                 }}
               >
-                Not Register ?{" "}
+                <Link
+                  to="/sendmail"
+                  style={{ color: "grey", fontWeight: "600" }}
+                >
+                  Forgot Password
+                </Link>
+              </p>
+              <p
+                style={{
+                  fontFamily: "Raleway",
+                  textAlign: "center",
+                  fontSize: "17px",
+                  marginTop: "20px",
+                }}
+              >
+                Not Registered ?{" "}
                 <Link to="/signup" style={{ color: "grey", fontWeight: "600" }}>
                   Register here
                 </Link>

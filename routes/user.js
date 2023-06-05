@@ -10,6 +10,8 @@ const { JWT_SECRET } = require("../keys");
 const requireLogin = require("../middleware/requireLogin");
 const validator = require("validator");
 const crypto = require("crypto");
+const { validatePassword } = require("../hook/validatepassword");
+const { convertEmail } = require("../hook/convertemail");
 
 const transporter2 = nodemailer.createTransport(
   sendGridTransport({
@@ -25,7 +27,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail", //your-email-service-provider
   auth: {
     user: "wilsonibekason@gmail.com", //your-email-username
-    pass: "mrocyrjlxnsdnmau", ///your-email-password
+    pass: "mrocyrjlxnsdnmau", // your-email-password
   },
   tls: {
     rejectUnauthorized: false,
@@ -449,6 +451,7 @@ router.post("/signin", (req, res) => {
   });
 });
 
+// UPDATE PROFILE PICS
 router.put("/updatepic", requireLogin, (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
@@ -461,6 +464,157 @@ router.put("/updatepic", requireLogin, (req, res) => {
       res.json(result);
     }
   );
+});
+
+// RESET PASSWORD
+router.post("/password-reset-verification", (req, res, next) => {
+  const { email } = req.body;
+  // check if email field is provided
+  if (!email) {
+    return res.status(422).json({ error: "Please provide an email" });
+  }
+
+  // Generate verification token
+  const verificationToken = crypto.randomBytes(20).toString("hex");
+
+  User.findOne({ email: email }).then((existingUser) => {
+    if (existingUser) {
+      const mailOptions = {
+        from: "wilsonibekason@gmail.com",
+        to: existingUser.email,
+        subject: "Email Verification",
+        html: `
+        <!-- Header -->
+        <div style="background-color: #007bff; padding: 20px; text-align: center;">
+          <img src="https://clintonel.org/wp-content/uploads/2022/05/cropped-CIC-logo-main-Cropped-2.jpg" alt="Company Logo" style="max-width: 100px;">
+        </div>
+        <div style="margin-top: 5rem; text-align: center; font-family: Arial, sans-serif; font-size: 16px;">
+          <div style="max-width: 350px; margin: 0 auto;">
+            <h2 style="font-size: 24px; margin-bottom: 20px;">Your Account Has Been Verified</h2>
+            <p>Well done, now click the link to reset your account password </p>
+          </div>
+        </div>
+        <!-- Button -->
+        <div style="margin-top: 30px;">
+          <a href="http://localhost:3000/reset-password-verify/${verificationToken}"  style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 20px;">Reset your password</a>
+        </div>
+        <!-- Button -->
+        </div>
+        </div>
+        <!-- Footer -->
+        <footer style="background-color: #f5f5f5; padding: 10px; text-align: center; font-family: Arial, sans-serif; font-size: 12px;">
+          <p>Any questions or inquiries?</p>
+          <p>12 Umuatako Road, Aba</p>
+        </footer>
+        `,
+      };
+
+      // Update user's verification token and token expiry
+      User.findByIdAndUpdate(existingUser._id, {
+        verificationToken,
+        verificationTokenExpiry: Date.now() + 3600000, // Token expires in 1 hour
+      });
+
+      // Send the email for verification
+      transporter
+        .sendMail(mailOptions)
+        .then(() => {
+          const convertedMail = convertEmail(existingUser.email);
+          return res.status(200).json({
+            message: `We sent an email to ${convertedMail} to reset your password`,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).json({ error: err });
+        });
+    }
+  });
+});
+
+// RESET PASSWORD
+router.post("/reset-password-verify/:token", async (req, res) => {
+  try {
+    const { password, email, confirmPassword } = req.body;
+    const token = req.params.token;
+
+    // Check if email, password, and confirmPassword fields are provided
+    if (!email || !password || !confirmPassword) {
+      return res
+        .status(403)
+        .json({ error: "Please provide email, password, and confirmPassword" });
+    }
+
+    // Validate email format
+    if (!validator.isEmail(email)) {
+      return res.status(422).json({ error: "Invalid email address" });
+    }
+
+    // Validate password format
+    if (!validatePassword(password)) {
+      return res.status(400).json({ error: "Invalid password format" });
+    }
+
+    // Check if password and confirmPassword match
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ error: "Password and confirmPassword do not match" });
+    }
+
+    // Find the user with the matching verification token
+    const user = await User.findOne({
+      verificationToken: token,
+      verificationTokenExpiry: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "Invalid or expired verification token" });
+    }
+
+    // Update the user's verification status and clear the verification token fields
+    user.verified = true;
+    user.verificationToken = undefined;
+    user.verificationTokenExpiry = undefined;
+
+    await user.save();
+
+    // Reset the user's password
+    user.password = password;
+    await user.save();
+
+    // Send an email for password reset verification
+    const mailOptions = {
+      from: "wilsonibekason@gmail.com",
+      to: user.email,
+      subject: "Email Verification",
+      html: `
+        <!-- Header -->
+        <div style="background-color: #007bff; padding: 20px; text-align: center;">
+          <img src="https://clintonel.org/wp-content/uploads/2022/05/cropped-CIC-logo-main-Cropped-2.jpg" alt="Company Logo" style="max-width: 100px;">
+        </div>
+        <div style="margin-top: 5rem; text-align: center; font-family: Arial, sans-serif; font-size: 16px;">
+          <div style="max-width: 350px; margin: 0 auto;">
+            <h2 style="font-size: 24px; margin-bottom: 20px;">Your Account Has Been Verified</h2>
+            <p>Your password has been reset</p>
+          </div>
+        </div>
+        <!-- Footer -->
+        <footer style="background-color: #f5f5f5; padding: 10px; text-align: center; font-family: Arial, sans-serif; font-size: 12px;">
+          <p>Any questions or inquiries?</p>
+          <p>12 Umuatako Road, Aba</p>
+        </footer>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    return res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "An error occurred" });
+  }
 });
 
 module.exports = router;
