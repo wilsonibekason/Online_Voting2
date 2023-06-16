@@ -1,0 +1,224 @@
+.collection-list-4 {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 35px;
+  grid-row-gap: 35px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-rows: auto auto;
+}
+
+@media screen and (max-width: 991px) {
+  .collection-list-4 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-rows: auto;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .collection-list-4 {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+  }
+}
+
+.collection-item {
+  margin-top: 50px;
+  margin-bottom: 0px;
+  padding-bottom: 50px;
+}
+
+.brix---blog-card-wrapper {
+  text-decoration: none;
+}
+
+@media screen and (max-width: 991px) {
+  .brix---blog-card-wrapper {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    border-radius: 20px;
+    box-shadow: 0 5px 6px 0 var(--sparkLibraryForegroundSecondary-aa6616bc);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .brix---blog-card-wrapper {
+    box-shadow: 0 2px 2px 0 var(--sparkLibraryForegroundSecondary-aa6616bc);
+  }
+}
+
+.brix---mg-bottom-32px {
+  margin-bottom: 32px;
+}
+
+@media screen and (max-width: 991px) {
+  .brix---mg-bottom-32px {
+    margin-bottom: 24px;
+  }
+}
+
+.brix---blog-card-image-wrapper {
+  overflow: hidden;
+  max-height: 400px;
+  border-radius: 24px;
+  transform: translate(0px, 0px);
+}
+
+@media screen and (max-width: 767px) {
+  .brix---blog-card-image-wrapper {
+    border-radius: 12px;
+  }
+}
+
+.brix---blog-card-image {
+  width: 100%;
+  height: 100%;
+  max-height: 200px;
+}
+
+@media screen and (max-width: 991px) {
+  .brix---blog-card-image {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .brix---blog-card-image {
+    max-height: 300px;
+    object-fit: cover;
+  }
+}
+
+.brix---mg-bottom-24px-2 {
+  display: flex;
+  margin-bottom: 24px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  text-align: left;
+}
+
+@media screen and (max-width: 479px) {
+  .brix---mg-bottom-24px-2 {
+    margin-bottom: 16px;
+  }
+}
+
+.brix---flex-horizontal-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: left;
+}
+
+.brix---mg-right-16px {
+  display: none;
+  margin-right: 16px;
+  text-align: center;
+}
+
+.brix---badge-primary-small-light {
+  display: block;
+  overflow: hidden;
+  padding: 14px 22px;
+
+  border-radius: 40px;
+
+  background-color: var(--elementsWebflowLibrarySecondaryColor2-8edf41ba);
+
+  color: var(--elementsWebflowLibraryAccentPrimary1-86b36df2);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+@media screen and (max-width: 767px) {
+  .brix---badge-primary-small-light {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .brix---badge-primary-small-light {
+    padding: 10px 20px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+
+.brix---color-neutral-802 {
+  color: var(--elementsWebflowLibraryNeutral600-06b40b4b);
+}
+
+.brix---text-200 {
+  display: block;
+  align-items: center;
+  font-family: 'Electraltstd Regular';
+  font-size: 18px;
+  line-height: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .brix---text-200 {
+    font-size: 16px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .brix---text-200 {
+    font-size: 15px;
+    line-height: 16px;
+  }
+}
+
+.brix---color-neutral-803 {
+  color: var(--elementsWebflowLibraryNeutral800-44c33ad4);
+}
+
+.brix---heading-h3-size {
+  margin-top: 0px;
+  margin-bottom: 12px;
+
+  font-family: 'Electraltstd Regular';
+  font-size: 24px;
+  line-height: 34px;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 991px) {
+  .brix---heading-h3-size {
+    font-size: 22px;
+    line-height: 32px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .brix---heading-h3-size {
+    margin-bottom: 10px;
+    font-size: 20px;
+    line-height: 30px;
+  }
+}
+
+.brix---paragraph-default-2 {
+  margin-bottom: 0px;
+  font-family: 'Electraltstd Regular';
+  font-size: 18px;
+  line-height: 30px;
+  text-align: justify;
+}
+
+@media screen and (max-width: 479px) {
+  .brix---paragraph-default-2 {
+    font-size: 17px;
+    line-height: 28px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .brix---paragraph-default-2 {
+    font-size: 16px;
+  }
+}

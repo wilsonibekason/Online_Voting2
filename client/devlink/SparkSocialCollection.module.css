@@ -1,0 +1,37 @@
+.spark-social-link-row {
+  display: flex;
+  justify-content: flex-end;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.spark-social-link {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  padding: 5px 8px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+
+  border-radius: 8px;
+
+  background-color: var(--sparkLibraryWhite-547781ba);
+
+  transition: color 150ms ease,background-color 150ms ease;
+
+  color: var(--sparkLibraryForegroundInteractive-cf7e9b6c);
+}
+
+.spark-social-link:hover {
+  background-color: var(--sparkLibraryForegroundInteractive-cf7e9b6c);
+  opacity: 1;
+  color: var(--sparkLibraryWhite-547781ba);
+}
+
+.spark-social-icon-svg {
+  position: static;
+  display: block;
+  width: 20px;
+  height: 20px;
+}
